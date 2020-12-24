@@ -8,12 +8,15 @@ export default class Ccomponent extends Component {
         this.state = {
             firstname: '',
             lastname: '',
-            items: []
+            items_firstname: [],
+            items_lastname: [],
+            visibility: false
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.handleChange2 = this.handleChange2.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         
     }
     
@@ -30,16 +33,26 @@ export default class Ccomponent extends Component {
     handleSubmit(event) {
         event.preventDefault()
         this.setState({
-            items: [...this.state.items, this.state.firstname, this.state.lastname]
+            items_firstname: [...this.state.items_firstname, this.state.firstname],
+            items_lastname: [...this.state.items_lastname, this.state.lastname]
         })
+    }
+    handleClick() {
+        this.setState(state => ({
+            visibility: !state.visibility
+        }))
     }
 
     render() {
         return (
             <div>
-            <ul>
-                    {this.state.items.map((item, index) =>(
-                        <li key={index}>{item}</li>
+                <button onClick={this.handleClick}>Click</button>
+                <ul>
+                    {this.state.items_firstname.map((item, index) =>(
+                        <li key={index}>Firstname: {item}</li>
+                    ))}
+                    {this.state.items_lastname.map((item, index) =>(
+                        <li key={index}>Lastname: {item}</li>
                     ))}
                 </ul>
             <form onSubmit={this.handleSubmit}>
