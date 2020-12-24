@@ -43,7 +43,8 @@ export default class Ccomponent extends Component {
                     ))}
                 </ul>
             <form onSubmit={this.handleSubmit}>
-                Firstname:<input value={this.state.firstname} onChange= {this.handleChange}/> 
+                Firstname:<input value={this.state.firstname} onChange= {this.handleChange}/>
+                <br/>
                 Lastname:<input value={this.state.lastname} onChange= {this.handleChange2}/> 
                 <button type="submit">Submit</button> 
             </form>
