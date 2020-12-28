@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 
 
-const styles = {
-    button1: {
-        display: 'flex',
-        justifyContent: 'right'
-    }
-}
-
 
 class Ccomponent extends Component {
     state = {
@@ -66,15 +59,26 @@ class Ccomponent extends Component {
         }
         
     }
+    changeComment = () => {
+        this.setState( {
+            comment: 'Write your problem here!!!'
+        })
+    }
 
     render() {
         const {firstname, lastname, email, from, to, comment, type, items} = this.state
         if (this.state.visibility) {
         return (
             <div>
-                <h3 style={{border: '2px solid black'}}>{items}</h3>
+                <h3 style={{
+                    border: '2px solid black',
+                    width: '400px',
+                    height: '300px',
+                    fontSize: '26px',
+                    textAlign: 'center'}}>{items}
+                </h3>
                 <form onSubmit={this.handleSubmit}>
-                    <button onClick={this.handleClick} style={styles.button1}>+</button><br/>
+                    <button onClick={this.handleClick} style={{float: "right"}}>+</button><br/>
                     <div>
                         Firstname: <input name='firstname' value={firstname} placeholder='firstname' onChange={this.change}/>
                     </div>
@@ -98,8 +102,11 @@ class Ccomponent extends Component {
                             <option value='4'>4</option>
                         </select>
                     </div>
+                    <div style={{fontSize: '16px'}}>
+                        <input type="checkbox" onChange={ this.changeComment}/> make report
+                    </div>
                     <div>
-                        Comment: <br/><textarea name='comment' value={comment} placeholder='comment' onChange={this.change}/>
+                        Comment: <br/><textarea name='comment' value={comment} placeholder='comment' onChange={this.change} />
                     </div>
                     <button type='submit'>Submit</button>
                 </form>
@@ -108,8 +115,14 @@ class Ccomponent extends Component {
         }else {
             return (
                 <div>
-                    <h3 style={{border: '2px solid black'}}>{items}</h3>
-                    <button onClick={this.handleClick} style={styles.button1}>+</button>
+                    <h3 style={
+                        {border: '2px solid black',
+                        width: '350px',
+                        height: '50px',
+                        fontSize: '26px',
+                        textAlign: 'center'}}>{items}
+                    </h3>
+                    <button onClick={this.handleClick} style={{float: "right"}}>+</button>
                 </div>
             )
         }
