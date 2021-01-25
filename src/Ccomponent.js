@@ -1,24 +1,51 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {createForm} from './redux/actions'
+import {createStore} from 'redux'
 
+const inicialState = {
+    items: ''
+}
+
+function reducer (state, action) {
+    switch (action.type) {
+        case 'CREATE':
+            return {...state, items: action.payload}
+        default: return(state)
+    }
+}
+
+const store = createStore(reducer, inicialState)
 
 
 class Ccomponent extends Component {
-    state = {
-        firstname: '',
-        lastname: '',
-        email: '',
-        emailError:'',
-        from: '',
-        to: '',
-        comment: '',
-        type: '',
-        visibility: false,
-        items: ['Task card with some info']
+    constructor (props) {
+        super (props)
+
+        this.state = {
+                firstname: '',
+                lastname: '',
+                email: '',
+                emailError:'',
+                from: '',
+                to: '',
+                comment: '',
+                type: '',
+                visibility: false,
+                items: ['']
+        }
     }
 
     change = (e) => {
         const {name, value} = e.target
         this.setState({ [name]:value})
+        this.setState({
+            items: [
+                this.state.firstname, 
+                this.state.lastname, 
+                this.state.email,
+            ]
+        })
     }
 
     handleClick = () => {
@@ -46,16 +73,15 @@ class Ccomponent extends Component {
         e.preventDefault()
         const isValid = this.validate()
         if (isValid) {
-            this.setState({
-                items: [
-                    'Firstname: ', this.state.firstname,<br key={1}/>,
-                    'Lastname: ',this.state.lastname,<br key={2}/>,
-                    'Email: ', this.state.email,<br key={3}/>,
-                    'From: ', this.state.from, ' to: ', this.state.to, <br key={4}/>,
-                    'Type: ', this.state.type,<br key={5}/>,
-                    'Comment: ', this.state.comment],
-                emailError:null
-            })
+            
+            const changeFirstname = {
+                type: 'CREATE',
+                payload: this.state.items
+            }
+
+            store.dispatch(changeFirstname)
+            console.log(store.getState())
+            
         }
         
     }
@@ -66,7 +92,6 @@ class Ccomponent extends Component {
     }
 
     render() {
-        const {firstname, lastname, email, from, to, comment, type, items} = this.state
         if (this.state.visibility) {
         return (
             <div>
@@ -75,26 +100,28 @@ class Ccomponent extends Component {
                     width: '400px',
                     height: '300px',
                     fontSize: '26px',
-                    textAlign: 'center'}}>{items}
+                    textAlign: 'center'}}>  Firstname: {store.getState().items[0]}<br/>
+                                            Lastname: {store.getState().items[1]}<br/>
+                                            Email: {store.getState().items[2]}
                 </h3>
                 <form onSubmit={this.handleSubmit}>
                     <button onClick={this.handleClick} style={{float: "right"}}>+</button><br/>
                     <div>
-                        Firstname: <input name='firstname' value={firstname} placeholder='firstname' onChange={this.change}/>
+                        Firstname: <input name='firstname' value={this.state.firstname} placeholder='firstname' onChange={this.change}/>
                     </div>
                     <div>
-                        Lastname: <input name='lastname' value={lastname} placeholder='lastname' onChange={this.change}/>
+                        Lastname: <input name='lastname' value={this.state.lastname} placeholder='lastname' onChange={this.change}/>
                     </div>
                     <div>
-                        Email: <input name='email' value={email} placeholder='email' onChange={this.change}/>
+                        Email: <input name='email' value={this.state.email} placeholder='email' onChange={this.change}/>
                         <div style={{fontSize:12 , color:'red'}}>{this.state.emailError}</div>
                     </div>
                     <div>
-                        From: <input name='from' value={from} placeholder='datafield' type='number' onChange={this.change}/>
-                        to: <input name='to' value={to} placeholder='datafield' type='number' onChange={this.change}/>
+                        From: <input name='from' value={this.state.from} placeholder='datafield' type='number' onChange={this.change}/>
+                        to: <input name='to' value={this.state.to} placeholder='datafield' type='number' onChange={this.change}/>
                     </div>
                     <div>
-                        Type: <select name='type' placeholder='datafield' value={type} onChange={this.change}>
+                        Type: <select name='type' placeholder='datafield' value={this.state.type} onChange={this.change}>
                             <option >select field</option>
                             <option value='1'>1</option>
                             <option value='2'>2</option>
@@ -106,7 +133,7 @@ class Ccomponent extends Component {
                         <input type="checkbox" onChange={ this.changeComment}/> make report
                     </div>
                     <div>
-                        Comment: <br/><textarea name='comment' value={comment} placeholder='comment' onChange={this.change} />
+                        Comment: <br/><textarea name='comment' value={this.state.comment} placeholder='comment' onChange={this.change} />
                     </div>
                     <button type='submit'>Submit</button>
                 </form>
@@ -120,7 +147,7 @@ class Ccomponent extends Component {
                         width: '350px',
                         height: '50px',
                         fontSize: '26px',
-                        textAlign: 'center'}}>{items}
+                        textAlign: 'center'}}>{'Hello'}
                     </h3>
                     <button onClick={this.handleClick} style={{float: "right"}}>+</button>
                 </div>
@@ -129,4 +156,8 @@ class Ccomponent extends Component {
     }
 }
 
-export default Ccomponent
+const dispatch = {
+    createForm
+}
+
+export default connect(null, dispatch) (Ccomponent)

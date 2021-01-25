@@ -3,11 +3,11 @@ import './App.css';
 import Ccomponent from './Ccomponent';
 
 
-function App() {
+function App(props) {
   return (
     <div className="App">
       <header className="App-header">
-        <Ccomponent />
+        <Ccomponent props={props}/>
       </header>
     </div>
   );
